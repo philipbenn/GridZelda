@@ -6,8 +6,89 @@
 
 #background {
   grid-area: 1 / 1;
-  width: calc(16 * 32px);
-  height: calc(16 * 32px);
+  display: grid;
+  grid-template-columns: repeat(var(--GRID_WIDTH), max-content)
+}
+
+.highlight {
+  outline: 2px dashed yellow;
+  translate: 0 0;
+}
+
+#background .tile {
+  width: var(--TILE_SIZE);
+  aspect-ratio: 1 / 1;
+
+  background-repeat: no-repeat;
+  background-size: 100%;
+  image-rendering: pixelated;
+}
+
+.tile.path {
+  background-image: url("tiles/path.png");
+}
+
+.tile.wall {
+  background-image: url("tiles/wall.png");
+}
+
+.tile.door {
+  background-image: url("tiles/door.png");
+}
+
+.tile.wall {
+  background-image: url("tiles/wall.png");
+}
+
+.tile.chest {
+  background-image: url("tiles/chest.png");
+}
+
+.tile.floor {
+  background-image: url("tiles/floor_planks.png");
+}
+
+.tile.water {
+  background-image: url("tiles/water.png");
+}
+
+.tile.lava {
+  background-image: url("tiles/lava.png");
+}
+
+.tile.tree {
+  background-image: url("tiles/tree.png");
+}
+
+.tile.flowers {
+  background-image: url("tiles/flowers.png");
+}
+
+.tile.grass {
+  background-image: url("tiles/grass.png");
+}
+
+.tile.fencehori {
+  background-image: url("tiles/fence_hori.png");
+}
+
+.tile.fencevert {
+  background-image: url("tiles/fence_vert.png");
+}
+
+.show-rect {
+  outline: 2px solid red;
+}
+
+.show-reg-point::before {
+  content: "";
+  position: absolute;
+  background-color: cyan;
+
+  width: 3px;
+  height: 3px;
+
+  translate: var(--regX) var(--regY);
 }
 
 #items {
@@ -19,7 +100,7 @@
 }
 
 #player {
-  width: 96px;
+  width: 15px;
   aspect-ratio: 16 / 20;
   background-image: url("images/characters/Character 1.png");
   background-size: 400% 400%;
