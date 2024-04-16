@@ -26,7 +26,7 @@ body {
 
 /* Styling for individual items */
 .item {
-  width: var(--TILE_SIZE);
+  width: 16px;
   aspect-ratio: 1 / 1;
   background-size: 100%;
   image-rendering: pixelated;
