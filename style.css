@@ -26,16 +26,40 @@ body {
 
 /* Styling for individual items */
 .item {
-  width: 16px;
+  width: var(--TILE_SIZE);
   aspect-ratio: 1 / 1;
   background-size: 100%;
   image-rendering: pixelated;
   grid-area: calc(var(--row) + 1) / calc(var(--col) + 1);
 }
 
-/* Gold item */
+/* Items */
 .item.gold {
   background-image: url(items/gold.png);
+}
+
+.item.chest-closed {
+  background-image: url(items/chest_closed.png);
+}
+
+.item.chest-open {
+  background-image: url(items/chest_open.png);
+}
+
+.item.gems {
+  background-image: url(items/gems.png);
+}
+
+.item.pot {
+  background-image: url(items/pot.png);
+}
+
+.item.pot-smashed {
+  background-image: url(items/pot_smashed.png);
+}
+
+.item.sign {
+  background-image: url(items/sign.png);
 }
 
 /* Background grid */
@@ -64,63 +88,83 @@ body {
 .tile.path {
   background-image: url("tiles/path.png");
 }
+
 .tile.wall {
   background-image: url("tiles/wall.png");
 }
+
 .tile.cliff {
   background-image: url("tiles/cliff.png");
 }
+
 .tile.redwall {
   background-image: url("tiles/redwall.png");
 }
+
 .tile.floorcarpet {
   background-image: url("tiles/floor_carpet.png");
 }
+
 .tile.mine {
   background-image: url("tiles/mine.png");
 }
+
 .tile.floor_stone {
   background-image: url("tiles/floor_stone.png");
 }
+
 .tile.well {
   background-image: url("tiles/well.png");
 }
+
 .tile.gate {
   background-image: url("tiles/gate.png");
 }
+
 .tile.abyss {
   background-image: url("tiles/abyss.png");
 }
+
 .tile.door {
   background-image: url("tiles/door.png");
 }
+
 .tile.wall {
   background-image: url("tiles/wall.png");
 }
+
 .tile.chest {
   background-image: url("tiles/chest.png");
 }
+
 .tile.floor {
   background-image: url("tiles/floor_planks.png");
 }
+
 .tile.water {
   background-image: url("tiles/water.png");
 }
+
 .tile.lava {
   background-image: url("tiles/lava.png");
 }
+
 .tile.tree {
   background-image: url("tiles/tree.png");
 }
+
 .tile.flowers {
   background-image: url("tiles/flowers.png");
 }
+
 .tile.grass {
   background-image: url("tiles/grass.png");
 }
+
 .tile.fencehori {
   background-image: url("tiles/fence_hori.png");
 }
+
 .tile.fencevert {
   background-image: url("tiles/fence_vert.png");
 }
@@ -143,10 +187,32 @@ body {
 /* Additional styling for items and characters */
 #items {
   grid-area: 1 / 1;
+  display: grid;
+  position: relative;
+  grid-template-columns: repeat(var(--GRID_WIDTH), var(--TILE_SIZE));
+  grid-template-rows: repeat(var(--GRID_HEIGHT), var(--TILE_SIZE));
 }
 
 #characters {
   grid-area: 1 / 1;
+}
+
+.take {
+  animation: itemDissapear 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes itemDissapear {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
 }
 
 /* Styling for the player character */
@@ -171,14 +237,17 @@ body {
   background-position: 0% 0%;
   animation-name: down;
 }
+
 #player.up {
   background-position: 0% -100%;
   animation-name: up;
 }
+
 #player.left {
   background-position: 0% -200%;
   animation-name: left;
 }
+
 #player.right {
   background-position: 0% -300%;
   animation-name: right;
@@ -189,30 +258,37 @@ body {
   from {
     background-position: 0% -100%;
   }
+
   to {
     background-position: -400% -100%;
   }
 }
+
 @keyframes left {
   from {
     background-position: 0% -200%;
   }
+
   to {
     background-position: -400% -200%;
   }
 }
+
 @keyframes right {
   from {
     background-position: 0% -300%;
   }
+
   to {
     background-position: -400% -300%;
   }
 }
+
 @keyframes down {
   from {
     background-position: 0% 0%;
   }
+
   to {
     background-position: -400% 0%;
   }

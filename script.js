@@ -2,6 +2,7 @@
 window.addEventListener("load", startGame);
 
 const playerModel = {
+  isTaking: false,
   x: 200,
   y: 40,
   regX: 6,
@@ -18,39 +19,40 @@ const playerModel = {
 }
 
 const itemsModel = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0], //1
+  // 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
+  [0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0], //1
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //2
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //3
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //4
+  [0, 0, 0, 0, 3, 0, 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], //3
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3, 0, 0, 0, 0, 0], //4
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //5
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //6
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //7
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0], //6
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //7
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //8
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //9
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //10
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //11
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //11
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //12
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //13
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //13
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //14
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //15
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //16
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //17
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //18
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //19
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0], //19
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //20
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //21
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  //22
 ];
 
-const visualItemGrid = []; 
+const visualItemGrid = [];
 
 const tilesModel = [
-// 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
+  // 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
   [7, 7, 7, 7, 16, 16, 16, 0, 9, 0, 9, 0, 9, 0, 0, 9, 0, 0, 0, 0, 9, 0, 0, 0, 9, 0, 0, 0, 0, 9, 0, 0, 9, 0, 9], //1
   [7, 7, 7, 12, 16, 15, 16, 9, 8, 0, 13, 13, 13, 13, 13, 0, 0, 0, 0, 9, 8, 0, 0, 0, 9, 0, 16, 16, 16, 16, 16, 0, 0, 0, 0], //2
   [7, 7, 12, 12, 0, 1, 0, 0, 0, 0, 13, 14, 14, 14, 13, 9, 0, 0, 9, 0, 0, 0, 9, 0, 0, 0, 16, 19, 19, 19, 16, 0, 9, 0, 0], //3
   [7, 7, 12, 0, 1, 1, 1, 0, 0, 9, 13, 14, 14, 14, 13, 0, 9, 0, 0, 0, 0, 9, 0, 0, 9, 0, 16, 19, 19, 19, 16, 9, 8, 0, 9], //4
-  [7, 12, 12, 0, 1, 1, 1, 0, 8, 0, 13, 13, 2, 13, 13, 0, 0, 0, 0, 9, 8, 0, 0, 0, 0, 0, 16, 16, 18 , 16, 16, 0, 0, 0, 0], //5
+  [7, 12, 12, 0, 1, 1, 1, 0, 8, 0, 13, 13, 2, 13, 13, 0, 0, 0, 0, 9, 8, 0, 0, 0, 0, 0, 16, 16, 18, 16, 16, 0, 0, 0, 0], //5
   [12, 12, 0, 0, 1, 1, 1, 0, 9, 0, 0, 11, 1, 11, 0, 0, 9, 0, 8, 0, 0, 0, 9, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0], //6
   [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 9, 0, 0, 0, 0, 9, 0, 9, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 9, 0], //7
   [0, 0, 9, 8, 1, 1, 1, 0, 9, 0, 0, 1, 1, 1, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 8, 9, 0, 0, 9, 8, 0, 0, 0], //8
@@ -61,14 +63,14 @@ const tilesModel = [
   [0, 9, 0, 0, 0, 8, 0, 0, 9, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1], //13
   [0, 0, 0, 9, 0, 9, 0, 0, 0, 0, 0, 1, 1, 1, 0, 9, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], //14
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 9, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 9, 0, 0], //15
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 9, 0, 0, 0, 0, 9  , 0, 0, 9, 0, 0, 1, 1, 9, 0, 0, 0, 9], //16
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 9, 0, 0, 0, 0, 9, 0, 0, 9, 0, 0, 1, 1, 9, 0, 0, 0, 9], //16
   [0, 0, 0, 0, 8, 0, 0, 9, 0, 0, 0, 9, 0, 0, 0, 0, 0, 8, 0, 0, 12, 12, 12, 12, 12, 12, 9, 0, 1, 1, 0, 0, 12, 12, 12], //17
   [0, 0, 9, 0, 0, 9, 0, 0, 8, 9, 0, 0, 0, 0, 9, 0, 9, 0, 9, 0, 12, 6, 6, 6, 6, 12, 9, 0, 1, 1, 8, 0, 12, 6, 6], //18
   [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 8, 0, 0, 9, 0, 0, 12, 6, 6, 6, 6, 12, 0, 9, 0, 9, 0, 0, 12, 6, 6], //19
   [0, 0, 0, 12, 12, 12, 12, 12, 12, 12, 12, 0, 0, 9, 0, 0, 0, 0, 0, 0, 12, 6, 6, 6, 6, 12, 12, 12, 12, 12, 12, 12, 12, 6, 6], //20
   [12, 12, 12, 12, 6, 6, 6, 6, 6, 6, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6], //21
   [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]  //22
-// 1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
+  // 1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
 ];
 
 const GRID_WIDTH = tilesModel[0].length;
@@ -100,16 +102,15 @@ function getTilesUnderPlayer(playerModel) {
 
 // View
 function createItems() {
- const visualItems = document.querySelector("#items");
+  const visualItems = document.querySelector("#items");
 
   for (let row = 0; row < GRID_HEIGHT; row++) {
     visualItemGrid[row] = [];
     for (let col = 0; col < GRID_WIDTH; col++) {
       const modelItem = itemsModel[row][col];
-      if(modelItem !== 0) {
+      if (modelItem !== 0) {
         const visualItem = document.createElement("div");
         visualItem.classList.add("item");
-        visualItem.classList.add("gold");
         visualItem.style.setProperty("--row", row);
         visualItem.style.setProperty("--col", col);
         visualItems.appendChild(visualItem);
@@ -117,13 +118,6 @@ function createItems() {
         visualItemGrid[row][col] = visualItem;
       }
     }
-  }
-}
-
-function checkForItems() {
-  const items = getItemsUnderPlayer();
-  if(items.length > 0) {  
-    console.log(`There are ${items.length} items under player!`);
   }
 }
 
@@ -150,26 +144,78 @@ function isItemUnderPlayer({ row, col }) {
 }
 
 function takeItem(coords) {
-  const itemValue = itemsModel[coords.row][coords.col];
+  var itemValue = itemsModel[coords.row][coords.col];
 
-  if(itemValue !== 0) {
+  if (itemValue !== 0 && itemValue !== 6 && itemValue !== 7 && itemValue !== 4) {
+    if (itemValue === 1) {
+      itemValue = 6;
+    }
+
+    if (itemValue === 3) {
+      itemValue = 7;
+    }
+
     itemsModel[coords.row][coords.col] = 0;
 
+    // Play sound
+    document.querySelector("#coin-sound").play();
+
     const visualItem = visualItemGrid[coords.row][coords.col];
-    visualItem.classList.remove("gold");
+    visualItem.classList.add("take");
   }
 }
 
 function checkForItems() {
   const items = getItemsUnderPlayer();
 
-  if(items.length > 0) {
+  if (items.length > 0 && controlsController.use && !playerModel.isTaking) {
+    playerModel.isTaking = true;
     items.forEach(takeItem);
+  }
+
+  if (playerModel.isTaking && !controlsController.use) {
+    playerModel.isTaking = false;
+  }
+}
+
+function displayItems() {
+  const visualItems = document.querySelectorAll("#items .item");
+
+  for (let i = 0; i < visualItems.length; i++) {
+    const visualItem = visualItems[i];
+    const row = parseInt(visualItem.style.getPropertyValue("--row"));
+    const col = parseInt(visualItem.style.getPropertyValue("--col"));
+    const itemValue = itemsModel[row][col];
+
+    visualItem.classList.remove("gold", "chest-closed", "gems", "pot", "sign");
+    visualItem.classList.add(getNameForItem(itemValue));
+  }
+}
+
+function getNameForItem(item) {
+  switch (item) {
+    case 0:
+      return "";
+    case 1:
+      return "chest-closed";
+    case 2:
+      return "gems";
+    case 3:
+      return "pot";
+    case 4:
+      return "sign";
+    case 5:
+      return "gold";
+    case 6:
+      return "chest-open";
+    case 7:
+      return "pot-smashed";
   }
 }
 
 function createTiles() {
   const background = document.querySelector("#background");
+  const gamefield = document.querySelector("#gamefield");
 
   for (let row = 0; row < GRID_HEIGHT; row++) {
     for (let col = 0; col < GRID_WIDTH; col++) {
@@ -182,6 +228,11 @@ function createTiles() {
   background.style.setProperty("--GRID_WIDTH", GRID_WIDTH)
   background.style.setProperty("--GRID_HEIGHT", GRID_HEIGHT)
   background.style.setProperty("--TILE_SIZE", TILE_SIZE + "px")
+
+  gamefield.style.setProperty("--GRID_WIDTH", GRID_WIDTH)
+  gamefield.style.setProperty("--GRID_HEIGHT", GRID_HEIGHT)
+  gamefield.style.setProperty("--TILE_SIZE", TILE_SIZE + "px")
+
 }
 
 function displayTiles() {
@@ -231,7 +282,7 @@ function getClassNameForTile(tile) {
       return "redwall";
     case 14:
       return "floorcarpet";
-    case 15: 
+    case 15:
       return "mine";
     case 16:
       return "floor_stone";
@@ -242,8 +293,6 @@ function getClassNameForTile(tile) {
     case 19:
       return "abyss";
   }
-  
-
 }
 
 function displayPlayerAtPosition() {
@@ -269,6 +318,7 @@ const controlsController = {
   right: false,
   up: false,
   down: false,
+  use: false
 };
 
 function handleKeyDown(event) {
@@ -288,6 +338,9 @@ function handleKeyDown(event) {
     case "ArrowDown":
     case "s":
       controlsController.down = true;
+      break;
+    case " ":
+      controlsController.use = true;
       break;
   }
 }
@@ -309,6 +362,9 @@ function handleKeyUp(event) {
     case "ArrowDown":
     case "s":
       controlsController.down = false;
+      break;
+    case " ":
+      controlsController.use = false;
       break;
   }
 }
@@ -361,7 +417,7 @@ function canMoveTo(pos) {
     case 1:
     case 2:
     case 5:
-    case 9: 
+    case 9:
     case 14:
     case 19:
       return true;
@@ -383,7 +439,7 @@ function tick(timestamp) {
   displayPlayerAtPosition();
   displayPlayerAnimation();
 
-  showDebugging();
+  //showDebugging();
 }
 
 // Debugging
@@ -449,6 +505,7 @@ function startGame() {
   requestAnimationFrame(tick);
   createTiles();
   createItems();
+  displayItems();
   displayTiles();
 }
 
