@@ -215,6 +215,85 @@ body {
   }
 }
 
+/* Styling for the enemy character */
+#enemy {
+  width: 15px;
+  aspect-ratio: 16 / 20;
+  background-image: url("images/characters/Character 5.png");
+  background-size: 400% 400%;
+  image-rendering: pixelated;
+  animation-name: down;
+}
+
+/* Animation for enemy movement */
+#enemy.animate {
+  animation-duration: 1s;
+  animation-timing-function: steps(4);
+  animation-iteration-count: infinite;
+}
+
+/* Animation keyframes for enemy movement */
+#enemy.down {
+  background-position: 0% 0%;
+  animation-name: down;
+}
+
+#enemy.up {
+  background-position: 0% -100%;
+  animation-name: up;
+}
+
+#enemy.left {
+  background-position: 0% -200%;
+  animation-name: left;
+}
+
+#enemy.right {
+  background-position: 0% -300%;
+  animation-name: right;
+}
+
+/* Keyframes for enemy animation */
+@keyframes up {
+  from {
+    background-position: 0% -100%;
+  }
+
+  to {
+    background-position: -400% -100%;
+  }
+}
+
+@keyframes left {
+  from {
+    background-position: 0% -200%;
+  }
+
+  to {
+    background-position: -400% -200%;
+  }
+}
+
+@keyframes right {
+  from {
+    background-position: 0% -300%;
+  }
+
+  to {
+    background-position: -400% -300%;
+  }
+}
+
+@keyframes down {
+  from {
+    background-position: 0% 0%;
+  }
+
+  to {
+    background-position: -400% 0%;
+  }
+}
+
 /* Styling for the player character */
 #player {
   width: 15px;

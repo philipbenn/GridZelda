@@ -1,6 +1,18 @@
-// Model
 window.addEventListener("load", startGame);
 
+// Initialization
+function startGame() {
+  console.log("Game started");
+  document.addEventListener("keydown", handleKeyDown);
+  document.addEventListener("keyup", handleKeyUp);
+  requestAnimationFrame(tick);
+  createTiles();
+  createItems();
+  displayItems();
+  displayTiles();
+}
+
+// Model
 const playerModel = {
   isTaking: false,
   x: 200,
@@ -18,11 +30,18 @@ const playerModel = {
   }
 }
 
+const enemyModel = {
+  x: 455,
+  y: 35,
+  regX: 6,
+  regY: 10
+}
+
 const itemsModel = [
   // 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
   [0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0], //1
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //2
-  [0, 0, 0, 0, 3, 0, 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], //3
+  [0, 0, 0, 0, 3, 0, 4, 0, 0, 0, 0, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], //3
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0], //4
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //5
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0], //6
@@ -88,10 +107,6 @@ function coordFromPos({ x, y }) {
   return coord;
 }
 
-function posFromCoord({ row, col }) {
-
-}
-
 function getTilesUnderPlayer(playerModel) {
   const tiles = [];
   const topLeft = { x: playerModel.x - playerModel.regX + playerModel.hitbox.x, y: playerModel.y };
@@ -149,18 +164,18 @@ function takeItem(coords) {
   if (itemValue === 1) { // If it's a chest
     itemsModel[coords.row][coords.col] = 6; // Change the model to 'open chest'
     const visualItem = visualItemGrid[coords.row][coords.col];
-    document.querySelector("#chest-sound").play();
+    chestSound.play();
     visualItem.classList.add("chest-open");
     visualItem.classList.remove("chest-closed");
   } else if (itemValue === 3) { // If it's a pot
     itemsModel[coords.row][coords.col] = 7; // Change the model to 'smashed pot'
     const visualItem = visualItemGrid[coords.row][coords.col];
-    document.querySelector("#pot-sound").play();
+    potSound.play();
     visualItem.classList.add("pot-smashed");
     visualItem.classList.remove("pot");
   } else if (itemValue === 2 || itemValue === 5) { // If it's gold or gems
     itemsModel[coords.row][coords.col] = itemValue;
-    document.querySelector("#coin-sound").play();
+    coinSound.play();
     const visualItem = visualItemGrid[coords.row][coords.col];
     visualItem.classList.add("take");
     visualItem.classList.add(getNameForItem(itemValue));
@@ -247,7 +262,6 @@ function displayTiles() {
       const visualTile = visualTiles[row * GRID_WIDTH + col];
 
       visualTile.classList.add(getClassNameForTile(modelTile));
-
     }
   }
 }
@@ -311,6 +325,23 @@ function displayPlayerAnimation() {
     visualPlayer.classList.add(playerModel.direction);
   } else {
     visualPlayer.classList.remove("animate");
+  }
+}
+
+function displayEnemyAtPosition() {
+  const visualEnemy = document.querySelector("#enemy");
+  visualEnemy.style.transform = `translate(${enemyModel.x - enemyModel.regX}px, ${enemyModel.y - enemyModel.regY}px)`;
+}
+
+function displayEnemyAnimation() {
+  const visualEnemy = document.querySelector("#enemy");
+
+  if (enemyModel.moving) {
+    visualEnemy.classList.add("animate");
+    visualEnemy.classList.remove("left", "right", "up", "down");
+    visualEnemy.classList.add(enemyModel.direction);
+  } else {
+    visualEnemy.classList.remove("animate");
   }
 }
 
@@ -441,6 +472,9 @@ function tick(timestamp) {
   displayPlayerAtPosition();
   displayPlayerAnimation();
 
+  displayEnemyAtPosition();
+  displayEnemyAnimation();
+
   //showDebugging();
 }
 
@@ -499,15 +533,13 @@ function unhighlightTile({ row, col }) {
   visualTile.classList.remove("highlight");
 }
 
-// Initialization
-function startGame() {
-  console.log("Game started");
-  document.addEventListener("keydown", handleKeyDown);
-  document.addEventListener("keyup", handleKeyUp);
-  requestAnimationFrame(tick);
-  createTiles();
-  createItems();
-  displayItems();
-  displayTiles();
-}
+// Audio
+
+var coinSound = document.getElementById("coin-sound");
+var chestSound = document.getElementById("chest-sound");
+var potSound = document.getElementById("pot-sound");
+
+coinSound.volume = 0.4;
+chestSound.volume = 0.3;
+potSound.volume = 0.1;
 
