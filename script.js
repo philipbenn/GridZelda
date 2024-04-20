@@ -8,8 +8,8 @@ function startGame() {
   requestAnimationFrame(tick);
   createTiles();
   createItems();
-  displayItems();
   displayTiles();
+  displayItems();
 }
 
 // Model
@@ -36,6 +36,27 @@ const enemyModel = {
   regX: 6,
   regY: 10
 }
+
+const enemyTypes = {
+  type1: {
+    x: 455,
+    y: 35,
+    regX: 6,
+    regY: 10,
+  },
+  type2: {
+    x: 200,
+    y: 100,
+    regX: 8,
+    regY: 12,
+  },
+  type3: {
+    x: 600,
+    y: 200,
+    regX: 5,
+    regY: 8,
+  },
+};
 
 const itemsModel = [
   // 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
