@@ -9,7 +9,6 @@ body {
 
 /* Container for the game field */
 #gamefield {
-  border: 1px solid chartreuse;
   display: grid;
   justify-content: center;
   width: fit-content;
@@ -73,6 +72,16 @@ body {
 .highlight {
   outline: 2px dashed yellow;
   translate: 0 0;
+}
+
+/* Hitbox for the player */
+.show-hitbox::after {
+  content: "";
+  position: absolute;
+  outline: 2px solid pink;
+  width: var(--hitboxW);
+  height: var(--hitboxH);
+  translate: var(--hitboxX) var(--hitboxY);
 }
 
 /* Tiles in the background */
@@ -296,7 +305,7 @@ body {
 
 /* Styling for the player character */
 #player {
-  width: 15px;
+  width: 16px;
   aspect-ratio: 16 / 20;
   background-image: url("images/characters/Character 1.png");
   background-size: 400% 400%;

@@ -23,10 +23,10 @@ const playerModel = {
   moving: false,
   direction: undefined,
   hitbox: {
-    x: 0,
-    y: 0,
-    w: 12,
-    h: 12,
+    x: 3,
+    y: 4,
+    w: 10,
+    h: 15,
   }
 }
 
@@ -129,11 +129,28 @@ function coordFromPos({ x, y }) {
 }
 
 function getTilesUnderPlayer(playerModel) {
-  const tiles = [];
-  const topLeft = { x: playerModel.x - playerModel.regX + playerModel.hitbox.x, y: playerModel.y };
-  const topRight = { x: playerModel.x - playerModel.regX + playerModel.hitbox.x + playerModel.hitbox.w, y: playerModel.y };
-  const bottomLeft = { x: playerModel.x, y: playerModel.y + playerModel.hitbox.h };
-  const bottomRight = { x: playerModel.x + playerModel.hitbox.w, y: playerModel.y + playerModel.hitbox.h };
+  const tileCoords = [];
+  const topLeft = coordFromPos({
+    x: playerModel.x - playerModel.regX + playerModel.hitbox.x,
+    y: playerModel.y - playerModel.regY + playerModel.hitbox.y
+  })
+  const topRight = coordFromPos({
+    x: playerModel.x - playerModel.regX + playerModel.hitbox.x + playerModel.hitbox.w,
+    y: playerModel.y - playerModel.regY + playerModel.hitbox.y
+  })
+
+  const bottomLeft = coordFromPos({
+    x: playerModel.x - playerModel.regX + playerModel.hitbox.x,
+    y: playerModel.y - playerModel.regY + playerModel.hitbox.y + playerModel.hitbox.h
+  })
+
+  const bottomRight = coordFromPos({
+    x: playerModel.x - playerModel.regX + playerModel.hitbox.x + playerModel.hitbox.w,
+    y: playerModel.y - playerModel.regY + playerModel.hitbox.y + playerModel.hitbox.h
+  })
+
+  tileCoords.push(topLeft, topRight, bottomLeft, bottomRight);
+  return tileCoords;
 }
 
 // View
@@ -457,6 +474,12 @@ function movePlayer(deltaTime) {
   }
 }
 
+function canMovePlayerToPos(playerModel, pos) {
+  const coords = getTilesUnderPlayer(playerModel);
+
+  return coords.every(canMoveTo);
+}
+
 function canMoveTo(pos) {
   const { row, col } = coordFromPos(pos);
 
@@ -496,7 +519,7 @@ function tick(timestamp) {
   displayEnemyAtPosition();
   displayEnemyAnimation();
 
-  //showDebugging();
+  showDebugging();
 }
 
 // Debugging
@@ -524,21 +547,19 @@ function showDebugging() {
   showDebugTileUnderPlayer();
   showDebugPlayerRect();
   showDebugPlayerRegistrationPoint();
+  showDebugPlayerHitbox();
 }
 
-let lastPlayerCoord = { row: 0, col: 0 };
+let highlitedTiles = [];
 
 function showDebugTileUnderPlayer() {
-  const coord = coordFromPos(playerModel);
 
-  if (coord.row != lastPlayerCoord.row || coord.col != lastPlayerCoord.col) {
-    unhighlightTile(lastPlayerCoord);
-    highlightTile(coord);
-  }
+  highlitedTiles.forEach(unhighlightTile);
 
-  lastPlayerCoord = coord;
+  const tileCoords = getTilesUnderPlayer(playerModel);
+  tileCoords.forEach(highlightTile);
 
-  highlightTile(coord);
+  highlitedTiles = tileCoords;
 }
 
 function highlightTile({ row, col }) {
@@ -554,6 +575,19 @@ function unhighlightTile({ row, col }) {
   visualTile.classList.remove("highlight");
 }
 
+function showDebugPlayerHitbox() {
+  const visualPlayer = document.querySelector("#player");
+
+  if (!visualPlayer.classList.contains("show-hitbox")) {
+    visualPlayer.classList.add("show-hitbox");
+  }
+
+  visualPlayer.style.setProperty("--hitboxX", playerModel.hitbox.x + "px");
+  visualPlayer.style.setProperty("--hitboxY", playerModel.hitbox.y + "px");
+  visualPlayer.style.setProperty("--hitboxW", playerModel.hitbox.w + "px");
+  visualPlayer.style.setProperty("--hitboxH", playerModel.hitbox.h + "px");
+}
+
 // Audio
 
 var coinSound = document.getElementById("coin-sound");
@@ -563,4 +597,3 @@ var potSound = document.getElementById("pot-sound");
 coinSound.volume = 0.4;
 chestSound.volume = 0.3;
 potSound.volume = 0.1;
-
